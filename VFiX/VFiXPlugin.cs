@@ -2,6 +2,7 @@ using BepInEx;
 using System.Diagnostics;
 using VFiX.ChestZipper;
 using VFiX.LightningStrikeImpact;
+using VFiX.MeteorStrikePredictionEffect;
 using VFiX.PooledEffectCleanup;
 using VFiX.PooledEffectParent;
 using VFiX.PooledEffectStart;
@@ -35,6 +36,7 @@ namespace VFiX
             EffectPoolPreventInUsePoolClearFix.Init();
             LightningStrikeImpactFix.Init();
             ChestZipperFix.Init();
+            MeteorStrikePredictionEffectFix.Init();
 
             stopwatch.Stop();
             Log.Message_NoCallerPrefix($"Initialized in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
