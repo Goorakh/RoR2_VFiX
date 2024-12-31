@@ -1,18 +1,18 @@
 using BepInEx;
 using System.Diagnostics;
 using VFiX.ChestZipper;
+using VFiX.GrandparentPreSpawnEffect;
 using VFiX.Highlight;
 using VFiX.LightningStrikeImpact;
 using VFiX.MeteorStrikePredictionEffect;
 using VFiX.PooledEffectCleanup;
 using VFiX.PooledEffectParent;
-using VFiX.PooledEffectStart;
 
 namespace VFiX
 {
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [BepInDependency(R2API.R2API.PluginGUID)]
-    [BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
+    //[BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     public class VFiXPlugin : BaseUnityPlugin
     {
         public const string PluginGUID = PluginAuthor + "." + PluginName;
@@ -38,6 +38,7 @@ namespace VFiX
             ChestZipperFix.Init();
             MeteorStrikePredictionEffectFix.Init();
             HighlightFix.Init();
+            GrandparentPreSpawnEffectFix.Init();
 
             stopwatch.Stop();
             Log.Message_NoCallerPrefix($"Initialized in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
