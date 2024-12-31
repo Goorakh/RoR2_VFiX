@@ -16,6 +16,8 @@ Notable examples:
 ### Missing effects
 Fixes missing visuals for chest open animations.
 
+Fixes interactable outlines randomly not appearing.
+
 ### Sound
 Fixes some impact sounds sometimes re-playing after a delay.
 

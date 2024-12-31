@@ -1,3 +1,7 @@
+**-.-.- Changes:**
+
+* Fixed interactable outlines randomly not appearing
+
 **1.0.1 Changes:**
 
 * Fixed Glowing Meteorite pre-strike effect disappearing too early
