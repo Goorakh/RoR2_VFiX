@@ -1,6 +1,7 @@
 using BepInEx;
 using System.Diagnostics;
 using VFiX.ChestZipper;
+using VFiX.Highlight;
 using VFiX.LightningStrikeImpact;
 using VFiX.PooledEffectCleanup;
 using VFiX.PooledEffectParent;
@@ -30,11 +31,11 @@ namespace VFiX
             Log.Init(Logger);
 
             PooledEffectParentFix.Init();
-            PooledEffectStartFix.Init();
             PooledEffectCleanupSoundFix.Init();
             EffectPoolPreventInUsePoolClearFix.Init();
             LightningStrikeImpactFix.Init();
             ChestZipperFix.Init();
+            HighlightFix.Init();
 
             stopwatch.Stop();
             Log.Message_NoCallerPrefix($"Initialized in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");

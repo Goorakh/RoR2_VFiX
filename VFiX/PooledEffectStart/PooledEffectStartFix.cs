@@ -9,7 +9,7 @@ namespace VFiX.PooledEffectStart
     static class PooledEffectStartFix
     {
         [SystemInitializer(typeof(EffectCatalog))]
-        public static void Init()
+        static void Init()
         {
             for (int i = 0; i < EffectCatalog.effectCount; i++)
             {
