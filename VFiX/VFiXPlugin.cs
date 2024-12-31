@@ -3,6 +3,7 @@ using System.Diagnostics;
 using VFiX.ChestZipper;
 using VFiX.Highlight;
 using VFiX.LightningStrikeImpact;
+using VFiX.MeteorStrikePredictionEffect;
 using VFiX.PooledEffectCleanup;
 using VFiX.PooledEffectParent;
 using VFiX.PooledEffectStart;
@@ -17,7 +18,7 @@ namespace VFiX
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "Gorakh";
         public const string PluginName = "VFiX";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.0.1";
 
         static VFiXPlugin _instance;
         internal static VFiXPlugin Instance => _instance;
@@ -35,6 +36,7 @@ namespace VFiX
             EffectPoolPreventInUsePoolClearFix.Init();
             LightningStrikeImpactFix.Init();
             ChestZipperFix.Init();
+            MeteorStrikePredictionEffectFix.Init();
             HighlightFix.Init();
 
             stopwatch.Stop();
