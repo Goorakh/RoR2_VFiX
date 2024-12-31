@@ -1,4 +1,4 @@
-**-.-.- Changes:**
+**1.0.2 Changes:**
 
 * Fixed interactable outlines randomly not appearing
 * Fixed Grandparent spawn effect disappearing too early

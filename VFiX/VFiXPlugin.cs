@@ -18,7 +18,7 @@ namespace VFiX
         public const string PluginGUID = PluginAuthor + "." + PluginName;
         public const string PluginAuthor = "Gorakh";
         public const string PluginName = "VFiX";
-        public const string PluginVersion = "1.0.1";
+        public const string PluginVersion = "1.0.2";
 
         static VFiXPlugin _instance;
         internal static VFiXPlugin Instance => _instance;
