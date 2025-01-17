@@ -5,6 +5,8 @@ Fixes various visual and audio issues introduced by Seekers of the Storm. Client
 ### Timings
 Fixes most cases of effects randomly disappearing before they're supposed to end.
 
+Fixes Scorch Worm aoe zone visuals not lasting as long as the actual damage zone.
+
 ### Effect positions
 Fixes some visual effects not properly attaching to objects theyre supposed to, causing them to float where they spawn and not follow an object.
 

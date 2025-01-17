@@ -1,3 +1,7 @@
+**-.-.- Changes:**
+
+* Fixed Scorch Worm aoe zone visuals not lasting as long as the actual damage zone.
+
 **1.0.2 Changes:**
 
 * Fixed interactable outlines randomly not appearing

@@ -7,12 +7,12 @@ using VFiX.LightningStrikeImpact;
 using VFiX.MeteorStrikePredictionEffect;
 using VFiX.PooledEffectCleanup;
 using VFiX.PooledEffectParent;
+using VFiX.ScorchlingBomb;
 
 namespace VFiX
 {
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     [BepInDependency(R2API.R2API.PluginGUID)]
-    //[BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     public class VFiXPlugin : BaseUnityPlugin
     {
         public const string PluginGUID = PluginAuthor + "." + PluginName;
@@ -39,6 +39,7 @@ namespace VFiX
             MeteorStrikePredictionEffectFix.Init();
             HighlightFix.Init();
             GrandparentPreSpawnEffectFix.Init();
+            ScorchlingBombFix.Init();
 
             stopwatch.Stop();
             Log.Message_NoCallerPrefix($"Initialized in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
