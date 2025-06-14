@@ -1,6 +1,6 @@
 ﻿{
 	"name": "VFiX",
-	"authorName": "Gorakh",
+	"author": "Gorakh",
 	"version_number": "1.0.3",
 	"website_url": "https://github.com/Goorakh/RoR2_VFiX",
 	"description": "Fixes various visual and audio issues introduced by Seekers of the Storm. Clientside.",

@@ -1,4 +1,6 @@
 ﻿using RoR2;
+using RoR2.ContentManagement;
+using RoR2BepInExPack.GameAssetPaths;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -8,7 +10,7 @@ namespace VFiX.MeteorStrikePredictionEffect
     {
         public static void Init()
         {
-            Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Meteor/MeteorStrikePredictionEffect.prefab").CallOnSuccess(meteorStrikePredictionEffect =>
+            AssetAsyncReferenceManager<GameObject>.LoadAsset(new AssetReferenceT<GameObject>(RoR2_Base_Meteor.MeteorStrikePredictionEffect_prefab)).CallOnSuccess(meteorStrikePredictionEffect =>
             {
                 Transform groundSlamIndicator = meteorStrikePredictionEffect.transform.Find("GroundSlamIndicator");
                 if (!groundSlamIndicator)

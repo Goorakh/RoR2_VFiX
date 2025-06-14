@@ -1,6 +1,8 @@
-﻿using RoR2;
+﻿using HG;
+using RoR2;
+using RoR2.ContentManagement;
+using RoR2BepInExPack.GameAssetPaths;
 using System;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -10,9 +12,9 @@ namespace VFiX.ChestZipper
     {
         public static void Init()
         {
-            Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Chest1/ChestUnzip.prefab").CallOnSuccess(chestUnzip =>
+            AssetAsyncReferenceManager<GameObject>.LoadAsset(new AssetReferenceT<GameObject>(RoR2_Base_Chest1.ChestUnzip_prefab)).CallOnSuccess(chestUnzip =>
             {
-                chestUnzip.AddComponent<ChestZipperController>();
+                chestUnzip.EnsureComponent<ChestZipperController>();
 
                 Transform sparks = chestUnzip.transform.Find("Sparks (1)");
                 if (sparks)
@@ -21,9 +23,9 @@ namespace VFiX.ChestZipper
                 }
             });
 
-            Addressables.LoadAssetAsync<GameObject>("RoR2/Base/GoldChest/GoldChestUnzip.prefab").CallOnSuccess(goldChestUnzip =>
+            AssetAsyncReferenceManager<GameObject>.LoadAsset(new AssetReferenceT<GameObject>(RoR2_Base_GoldChest.GoldChestUnzip_prefab)).CallOnSuccess(goldChestUnzip =>
             {
-                goldChestUnzip.AddComponent<ChestZipperController>();
+                goldChestUnzip.EnsureComponent<ChestZipperController>();
 
                 Transform sparks = goldChestUnzip.transform.Find("Sparks (1)");
                 if (sparks)
@@ -32,20 +34,20 @@ namespace VFiX.ChestZipper
                 }
             });
 
-            static void fixChestZipperReferences(string assetPath, string[] zipperPaths)
+            static void fixChestZipperReferences(string chestPrefabAssetGuid, string[] zipperPaths)
             {
-                Addressables.LoadAssetAsync<GameObject>(assetPath).CallOnSuccess(prefab =>
+                AssetAsyncReferenceManager<GameObject>.LoadAsset(new AssetReferenceT<GameObject>(chestPrefabAssetGuid)).CallOnSuccess(chestPrefab =>
                 {
-                    if (!prefab.TryGetComponent(out ModelLocator modelLocator))
+                    if (!chestPrefab.TryGetComponent(out ModelLocator modelLocator))
                     {
-                        Log.Error($"{prefab} is missing model locator");
+                        Log.Error($"{chestPrefab} is missing model locator");
                         return;
                     }
 
                     Transform modelTransform = modelLocator.modelTransform;
                     if (!modelTransform)
                     {
-                        Log.Error($"{prefab} is missing model transform");
+                        Log.Error($"{chestPrefab} is missing model transform");
                         return;
                     }
 
@@ -64,7 +66,7 @@ namespace VFiX.ChestZipper
                         Transform newReference = modelTransform.Find(modelPath);
                         if (!newReference)
                         {
-                            Log.Warning($"Failed to find {modelPath} relative to {modelTransform} ({prefab})");
+                            Log.Warning($"Failed to find {modelPath} relative to {modelTransform} ({chestPrefab})");
                             return false;
                         }
 
@@ -88,21 +90,21 @@ namespace VFiX.ChestZipper
 
                     if (numAddedZipperReferences == 0)
                     {
-                        Log.Error($"Failed to fix zipper references for {prefab}");
+                        Log.Error($"Failed to fix zipper references for {chestPrefab}");
                     }
                     else
                     {
-                        Log.Debug($"Fixed {numAddedZipperReferences} zipper references for {prefab}");
+                        Log.Debug($"Fixed {numAddedZipperReferences} zipper references for {chestPrefab}");
                     }
                 });
             }
 
             string[] categoryChestZipperPaths = ["CategoryChestArmature/zipper1", "CategoryChestArmature/zipper1.001"];
-            fixChestZipperReferences("RoR2/Base/CategoryChest/CategoryChestDamage.prefab", categoryChestZipperPaths);
-            fixChestZipperReferences("RoR2/Base/CategoryChest/CategoryChestHealing.prefab", categoryChestZipperPaths);
-            fixChestZipperReferences("RoR2/Base/CategoryChest/CategoryChestUtility.prefab", categoryChestZipperPaths);
+            fixChestZipperReferences(RoR2_Base_CategoryChest.CategoryChestDamage_prefab, categoryChestZipperPaths);
+            fixChestZipperReferences(RoR2_Base_CategoryChest.CategoryChestHealing_prefab, categoryChestZipperPaths);
+            fixChestZipperReferences(RoR2_Base_CategoryChest.CategoryChestUtility_prefab, categoryChestZipperPaths);
 
-            Addressables.LoadAssetAsync<RuntimeAnimatorController>("RoR2/Base/CategoryChest/animCategoryChest.controller").CallOnSuccess(categoryChestAnimatorController =>
+            AssetAsyncReferenceManager<RuntimeAnimatorController>.LoadAsset(new AssetReferenceT<RuntimeAnimatorController>(RoR2_Base_CategoryChest.animCategoryChest_controller)).CallOnSuccess(categoryChestAnimatorController =>
             {
                 AnimationClip[] animationClips = categoryChestAnimatorController.animationClips;
                 for (int i = 0; i < animationClips.Length; i++)
@@ -141,7 +143,7 @@ namespace VFiX.ChestZipper
         static void ChestBehavior_Awake(On.RoR2.ChestBehavior.orig_Awake orig, ChestBehavior self)
         {
             orig(self);
-            self.gameObject.AddComponent<ChestZipperTracker>();
+            self.gameObject.EnsureComponent<ChestZipperTracker>();
         }
 
         static void Opened_OnEnter(On.EntityStates.Barrel.Opened.orig_OnEnter orig, EntityStates.Barrel.Opened self)

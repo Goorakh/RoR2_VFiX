@@ -14,7 +14,7 @@ namespace VFiX.PooledEffectCleanup
             orig(self, inKillObject);
 
             // Prevent OnDestroy events from triggering when clearing pools
-            if (inKillObject.TryGetComponent(out AkTriggerHandler akTriggerHandler))
+            if (inKillObject && inKillObject.TryGetComponent(out AkTriggerHandler akTriggerHandler))
             {
                 akTriggerHandler.triggerList.Clear();
             }

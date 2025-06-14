@@ -27,7 +27,10 @@ namespace VFiX.PooledEffectParent
         {
             orig(self);
 
-            self.transform.SetParent(null, true);
+            if (self)
+            {
+                self.transform.SetParent(null, true);
+            }
         }
     }
 }

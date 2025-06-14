@@ -1,3 +1,7 @@
+**?.?.? Changes:**
+
+* Updated for memory optimization update
+
 **1.0.3 Changes:**
 
 * Fixed Scorch Worm aoe zone visuals not lasting as long as the actual damage zone.
