@@ -1,4 +1,4 @@
-**?.?.? Changes:**
+**1.0.5 Changes:**
 
 * Fixed missing fall damage sound on Bandit
 
