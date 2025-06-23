@@ -1,5 +1,6 @@
 using BepInEx;
 using System.Diagnostics;
+using VFiX.BanditFallDamageSound;
 using VFiX.ChestZipper;
 using VFiX.GrandparentPreSpawnEffect;
 using VFiX.Highlight;
@@ -31,6 +32,7 @@ namespace VFiX
 
             Log.Init(Logger);
 
+            BanditFallDamageSoundFix.Init();
             ChestZipperFix.Init();
             EffectPoolPreventInUsePoolClearFix.Init();
             GrandparentPreSpawnEffectFix.Init();
