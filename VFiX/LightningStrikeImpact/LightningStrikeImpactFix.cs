@@ -1,8 +1,6 @@
 ﻿using RoR2;
-using RoR2.ContentManagement;
 using RoR2BepInExPack.GameAssetPaths;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace VFiX.LightningStrikeImpact
 {
@@ -10,7 +8,7 @@ namespace VFiX.LightningStrikeImpact
     {
         public static void Init()
         {
-            AssetAsyncReferenceManager<GameObject>.LoadAsset(new AssetReferenceT<GameObject>(RoR2_Base_Lightning.LightningStrikeImpact_prefab)).CallOnSuccess(lightningStrikeImpactPrefab =>
+            AssetLoadUtils.TemporaryPreload<GameObject>(RoR2_Base_Lightning.LightningStrikeImpact_prefab, lightningStrikeImpactPrefab =>
             {
                 if (!lightningStrikeImpactPrefab.TryGetComponent(out EffectComponent effectComponent))
                 {
@@ -24,7 +22,7 @@ namespace VFiX.LightningStrikeImpact
                 }
             });
 
-            AssetAsyncReferenceManager<GameObject>.LoadAsset(new AssetReferenceT<GameObject>(RoR2_Base_LightningStrikeOnHit.SimpleLightningStrikeImpact_prefab)).CallOnSuccess(simpleLightningStrikeImpactPrefab =>
+            AssetLoadUtils.TemporaryPreload<GameObject>(RoR2_Base_LightningStrikeOnHit.SimpleLightningStrikeImpact_prefab, simpleLightningStrikeImpactPrefab =>
             {
                 if (!simpleLightningStrikeImpactPrefab.TryGetComponent(out EffectComponent effectComponent))
                 {

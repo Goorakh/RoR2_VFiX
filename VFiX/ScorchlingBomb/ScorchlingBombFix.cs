@@ -1,8 +1,6 @@
 ﻿using RoR2;
-using RoR2.ContentManagement;
 using RoR2BepInExPack.GameAssetPaths;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace VFiX.ScorchlingBomb
 {
@@ -10,7 +8,7 @@ namespace VFiX.ScorchlingBomb
     {
         public static void Init()
         {
-            AssetAsyncReferenceManager<GameObject>.LoadAsset(new AssetReferenceT<GameObject>(RoR2_DLC2_Scorchling.LavaBombHeatOrbGhost_prefab)).CallOnSuccess(lavaBombHeatOrbGhost =>
+            AssetLoadUtils.TemporaryPreload<GameObject>(RoR2_DLC2_Scorchling.LavaBombHeatOrbGhost_prefab, lavaBombHeatOrbGhost =>
             {
                 foreach (AnimateShaderAlpha animateShaderAlpha in lavaBombHeatOrbGhost.GetComponentsInChildren<AnimateShaderAlpha>(true))
                 {

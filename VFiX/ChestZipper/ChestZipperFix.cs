@@ -1,10 +1,8 @@
 ﻿using HG;
 using RoR2;
-using RoR2.ContentManagement;
 using RoR2BepInExPack.GameAssetPaths;
 using System;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace VFiX.ChestZipper
 {
@@ -12,7 +10,7 @@ namespace VFiX.ChestZipper
     {
         public static void Init()
         {
-            AssetAsyncReferenceManager<GameObject>.LoadAsset(new AssetReferenceT<GameObject>(RoR2_Base_Chest1.ChestUnzip_prefab)).CallOnSuccess(chestUnzip =>
+            AssetLoadUtils.TemporaryPreload<GameObject>(RoR2_Base_Chest1.ChestUnzip_prefab, chestUnzip =>
             {
                 chestUnzip.EnsureComponent<ChestZipperController>();
 
@@ -23,7 +21,7 @@ namespace VFiX.ChestZipper
                 }
             });
 
-            AssetAsyncReferenceManager<GameObject>.LoadAsset(new AssetReferenceT<GameObject>(RoR2_Base_GoldChest.GoldChestUnzip_prefab)).CallOnSuccess(goldChestUnzip =>
+            AssetLoadUtils.TemporaryPreload<GameObject>(RoR2_Base_GoldChest.GoldChestUnzip_prefab, goldChestUnzip =>
             {
                 goldChestUnzip.EnsureComponent<ChestZipperController>();
 
@@ -36,7 +34,7 @@ namespace VFiX.ChestZipper
 
             static void fixChestZipperReferences(string chestPrefabAssetGuid, string[] zipperPaths)
             {
-                AssetAsyncReferenceManager<GameObject>.LoadAsset(new AssetReferenceT<GameObject>(chestPrefabAssetGuid)).CallOnSuccess(chestPrefab =>
+                AssetLoadUtils.TemporaryPreload<GameObject>(chestPrefabAssetGuid, chestPrefab =>
                 {
                     if (!chestPrefab.TryGetComponent(out ModelLocator modelLocator))
                     {
@@ -104,7 +102,7 @@ namespace VFiX.ChestZipper
             fixChestZipperReferences(RoR2_Base_CategoryChest.CategoryChestHealing_prefab, categoryChestZipperPaths);
             fixChestZipperReferences(RoR2_Base_CategoryChest.CategoryChestUtility_prefab, categoryChestZipperPaths);
 
-            AssetAsyncReferenceManager<RuntimeAnimatorController>.LoadAsset(new AssetReferenceT<RuntimeAnimatorController>(RoR2_Base_CategoryChest.animCategoryChest_controller)).CallOnSuccess(categoryChestAnimatorController =>
+            AssetLoadUtils.TemporaryPreload<RuntimeAnimatorController>(RoR2_Base_CategoryChest.animCategoryChest_controller, categoryChestAnimatorController =>
             {
                 AnimationClip[] animationClips = categoryChestAnimatorController.animationClips;
                 for (int i = 0; i < animationClips.Length; i++)

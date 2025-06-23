@@ -31,14 +31,14 @@ namespace VFiX
 
             Log.Init(Logger);
 
-            PooledEffectParentFix.Init();
-            PooledEffectCleanupSoundFix.Init();
-            EffectPoolPreventInUsePoolClearFix.Init();
-            LightningStrikeImpactFix.Init();
             ChestZipperFix.Init();
-            MeteorStrikePredictionEffectFix.Init();
-            HighlightFix.Init();
+            EffectPoolPreventInUsePoolClearFix.Init();
             GrandparentPreSpawnEffectFix.Init();
+            HighlightFix.Init();
+            LightningStrikeImpactFix.Init();
+            MeteorStrikePredictionEffectFix.Init();
+            PooledEffectCleanupSoundFix.Init();
+            PooledEffectParentFix.Init();
             ScorchlingBombFix.Init();
 
             stopwatch.Stop();
