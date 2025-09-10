@@ -8,7 +8,6 @@ using VFiX.LightningStrikeImpact;
 using VFiX.MeteorStrikePredictionEffect;
 using VFiX.PooledEffectCleanup;
 using VFiX.PooledEffectParent;
-using VFiX.ScorchlingBomb;
 
 namespace VFiX
 {
@@ -41,7 +40,6 @@ namespace VFiX
             MeteorStrikePredictionEffectFix.Init();
             PooledEffectCleanupSoundFix.Init();
             PooledEffectParentFix.Init();
-            ScorchlingBombFix.Init();
 
             stopwatch.Stop();
             Log.Message_NoCallerPrefix($"Initialized in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
