@@ -1,4 +1,5 @@
 ﻿using RoR2;
+using System.Collections;
 using UnityEngine;
 
 namespace VFiX.ChestZipper
@@ -8,9 +9,6 @@ namespace VFiX.ChestZipper
         EffectManagerHelper _effectManagerHelper;
 
         ChestZipperTracker _ownerZipperTracker;
-        bool _isTracked = false;
-
-        float _untrackedAge = 0f;
 
         void Start()
         {
@@ -19,45 +17,44 @@ namespace VFiX.ChestZipper
 
         void OnEnable()
         {
-            _isTracked = false;
-            _untrackedAge = 0f;
+            StartCoroutine(waitThenFindOwner());
         }
 
         void OnDisable()
         {
-            if (_isTracked && _ownerZipperTracker)
+            if (_ownerZipperTracker)
             {
                 _ownerZipperTracker.RemoveZipperInstance(this);
             }
         }
 
-        void FixedUpdate()
+        IEnumerator waitThenFindOwner()
         {
-            if (!_isTracked)
+            yield return new WaitForFixedUpdate();
+
+            findOwner();
+        }
+
+        void findOwner()
+        {
+            GameObject chestOwner = null;
+
+            EntityLocator entityLocator = GetComponentInParent<EntityLocator>();
+            if (entityLocator)
             {
-                _untrackedAge += Time.fixedDeltaTime;
-                if (_untrackedAge > 10f)
-                {
-                    Log.Warning($"{name}: Timed out, returning to pool");
-                    DestroyOrReturnToPool();
-                    return;
-                }
+                chestOwner = entityLocator.entity;
+            }
 
-                GameObject chestOwner = null;
+            if (chestOwner && chestOwner.TryGetComponent(out _ownerZipperTracker))
+            {
+                Log.Debug($"{Util.GetGameObjectHierarchyName(gameObject)}: Found chest owner: {Util.GetGameObjectHierarchyName(chestOwner)}");
 
-                EntityLocator entityLocator = GetComponentInParent<EntityLocator>();
-                if (entityLocator)
-                {
-                    chestOwner = entityLocator.entity;
-                }
-
-                if (chestOwner && chestOwner.TryGetComponent(out _ownerZipperTracker))
-                {
-                    Log.Debug($"Found chest owner: {chestOwner}");
-
-                    _ownerZipperTracker.TrackZipperInstance(this);
-                    _isTracked = true;
-                }
+                _ownerZipperTracker.TrackZipperInstance(this);
+            }
+            else
+            {
+                Log.Warning($"{Util.GetGameObjectHierarchyName(gameObject)} failed to find owner, returning to pool");
+                DestroyOrReturnToPool();
             }
         }
 
@@ -66,10 +63,11 @@ namespace VFiX.ChestZipper
             if (_effectManagerHelper)
             {
                 _effectManagerHelper.ReturnToPool();
-                return;
             }
-
-            Destroy(gameObject);
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
