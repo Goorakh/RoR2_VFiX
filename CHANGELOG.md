@@ -1,6 +1,6 @@
-**?.?.? Changes:**
+**1.0.6 Changes:**
 
-* Fixed certain effects significantly increasing or decreasing in size after being repeatedly spawned
+* Fixed certain effects increasing or decreasing in size after being repeatedly spawned
 
 **1.0.5 Changes:**
 
