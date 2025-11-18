@@ -2,6 +2,6 @@
 {
     public interface IEffectRestarter
     {
-        public EffectRestarterController RestarterController { get; set; }
+        void Restart();
     }
 }

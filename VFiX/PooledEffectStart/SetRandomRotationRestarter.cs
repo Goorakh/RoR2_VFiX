@@ -2,55 +2,24 @@
 
 namespace VFiX.PooledEffectStart
 {
-    public class SetRandomRotationRestarter : MonoBehaviour, IEffectRestarter
+    public sealed class SetRandomRotationRestarter : MonoBehaviour, IEffectRestarter
     {
-        [SerializeField]
-        EffectRestarterController _restarter;
-
-        EffectRestarterController IEffectRestarter.RestarterController
-        {
-            get => _restarter;
-            set => _restarter = value;
-        }
-
-        public SetRandomRotation SetRandomRotation;
+        SetRandomRotation _setRandomRotation;
 
         Vector3 _originalEulerAngles;
 
         void Awake()
         {
-            if (!_restarter)
-            {
-                _restarter = GetComponentInParent<EffectRestarterController>();
-            }
-
-            if (_restarter)
-            {
-                _restarter.OnReset += reset;
-            }
-
-            if (!SetRandomRotation)
-            {
-                SetRandomRotation = GetComponent<SetRandomRotation>();
-            }
-
+            _setRandomRotation = GetComponent<SetRandomRotation>();
             _originalEulerAngles = transform.localEulerAngles;
         }
 
-        void OnDestroy()
+        void IEffectRestarter.Restart()
         {
-            if (_restarter)
-            {
-                _restarter.OnReset -= reset;
-            }
-        }
-
-        void reset()
-        {
-            if (SetRandomRotation)
+            if (_setRandomRotation)
             {
                 transform.localEulerAngles = _originalEulerAngles;
-                SetRandomRotation.Start();
+                _setRandomRotation.Start();
             }
         }
     }

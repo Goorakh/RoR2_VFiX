@@ -3,50 +3,20 @@ using UnityEngine;
 
 namespace VFiX.PooledEffectStart
 {
-    public class ApplyForceOnStartRestarter : MonoBehaviour, IEffectRestarter
+    public sealed class ApplyForceOnStartRestarter : MonoBehaviour, IEffectRestarter
     {
-        [SerializeField]
-        EffectRestarterController _restarter;
-
-        EffectRestarterController IEffectRestarter.RestarterController
-        {
-            get => _restarter;
-            set => _restarter = value;
-        }
-
-        public ApplyForceOnStart ApplyForceOnStart;
+        ApplyForceOnStart _applyForceOnStart;
 
         void Awake()
         {
-            if (!_restarter)
-            {
-                _restarter = GetComponentInParent<EffectRestarterController>();
-            }
-
-            if (_restarter)
-            {
-                _restarter.OnReset += reset;
-            }
-
-            if (!ApplyForceOnStart)
-            {
-                ApplyForceOnStart = GetComponent<ApplyForceOnStart>();
-            }
+            _applyForceOnStart = GetComponent<ApplyForceOnStart>();
         }
 
-        void OnDestroy()
+        void IEffectRestarter.Restart()
         {
-            if (_restarter)
+            if (_applyForceOnStart)
             {
-                _restarter.OnReset -= reset;
-            }
-        }
-
-        void reset()
-        {
-            if (ApplyForceOnStart)
-            {
-                ApplyForceOnStart.Start();
+                _applyForceOnStart.Start();
             }
         }
     }

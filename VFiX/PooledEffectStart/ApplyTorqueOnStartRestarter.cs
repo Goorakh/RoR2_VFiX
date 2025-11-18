@@ -3,50 +3,20 @@ using UnityEngine;
 
 namespace VFiX.PooledEffectStart
 {
-    public class ApplyTorqueOnStartRestarter : MonoBehaviour, IEffectRestarter
+    public sealed class ApplyTorqueOnStartRestarter : MonoBehaviour, IEffectRestarter
     {
-        [SerializeField]
-        EffectRestarterController _restarter;
-
-        EffectRestarterController IEffectRestarter.RestarterController
-        {
-            get => _restarter;
-            set => _restarter = value;
-        }
-
-        public ApplyTorqueOnStart ApplyTorqueOnStart;
+        ApplyTorqueOnStart _applyTorqueOnStart;
 
         void Awake()
         {
-            if (!_restarter)
-            {
-                _restarter = GetComponentInParent<EffectRestarterController>();
-            }
-
-            if (_restarter)
-            {
-                _restarter.OnReset += reset;
-            }
-
-            if (!ApplyTorqueOnStart)
-            {
-                ApplyTorqueOnStart = GetComponent<ApplyTorqueOnStart>();
-            }
+            _applyTorqueOnStart = GetComponent<ApplyTorqueOnStart>();
         }
 
-        void OnDestroy()
+        void IEffectRestarter.Restart()
         {
-            if (_restarter)
+            if (_applyTorqueOnStart)
             {
-                _restarter.OnReset -= reset;
-            }
-        }
-
-        void reset()
-        {
-            if (ApplyTorqueOnStart)
-            {
-                ApplyTorqueOnStart.Start();
+                _applyTorqueOnStart.Start();
             }
         }
     }

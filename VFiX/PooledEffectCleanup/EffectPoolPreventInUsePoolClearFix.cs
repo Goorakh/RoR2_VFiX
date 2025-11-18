@@ -27,13 +27,16 @@ namespace VFiX.PooledEffectCleanup
                 return;
             }
 
-            if (c.TryGotoNext(MoveType.After,
-                              x => x.MatchCallOrCallvirt(effectPrefabMapCount.GetMethod),
-                              x => x.MatchLdcI4(out _)))
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchCallOrCallvirt(effectPrefabMapCount.GetMethod),
+                               x => x.MatchLdcI4(out _)))
             {
-                c.Emit(OpCodes.Pop);
-                c.Emit(OpCodes.Ldc_I4, int.MaxValue);
+                Log.Error("Failed to find patch location");
+                return;
             }
+
+            c.Emit(OpCodes.Pop);
+            c.Emit(OpCodes.Ldc_I4, int.MaxValue);
         }
     }
 }

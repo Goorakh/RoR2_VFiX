@@ -1,48 +1,52 @@
-﻿using System;
+﻿using RoR2;
 using UnityEngine;
 
 namespace VFiX.PooledEffectStart
 {
     public sealed class EffectRestarterController : MonoBehaviour
     {
-        Rigidbody[] _rigidbodies;
+        EffectComponent _effectComponent;
 
-        bool _hasStarted;
-        bool _shouldReset;
-
-        public event Action OnReset;
+        Rigidbody[] _rigidbodies = [];
+        IEffectRestarter[] _restarters = [];
 
         void Awake()
         {
-            _rigidbodies = GetComponentsInChildren<Rigidbody>(true);
-        }
-
-        void Start()
-        {
-            _hasStarted = true;
-        }
-
-        void OnEnable()
-        {
-            if (_hasStarted)
+            _effectComponent = GetComponent<EffectComponent>();
+            if (_effectComponent)
             {
-                _shouldReset = true;
+                _effectComponent.OnEffectComponentReset += onEffectComponentReset;
+            }
+
+            _rigidbodies = GetComponentsInChildren<Rigidbody>(true);
+            _restarters = GetComponentsInChildren<IEffectRestarter>(true);
+        }
+
+        void OnDestroy()
+        {
+            if (_effectComponent)
+            {
+                _effectComponent.OnEffectComponentReset -= onEffectComponentReset;
             }
         }
 
-        void Update()
+        void onEffectComponentReset(bool hasEffectData)
         {
-            if (_shouldReset)
+            foreach (Rigidbody rigidbody in _rigidbodies)
             {
-                _shouldReset = false;
-
-                foreach (Rigidbody rigidbody in _rigidbodies)
+                if (rigidbody)
                 {
                     rigidbody.velocity = Vector3.zero;
                     rigidbody.angularVelocity = Vector3.zero;
                 }
+            }
 
-                OnReset?.Invoke();
+            foreach (IEffectRestarter restarter in _restarters)
+            {
+                if (restarter == null || (restarter is UnityEngine.Object restarterObject && !restarterObject))
+                    continue;
+
+                restarter.Restart();
             }
         }
     }

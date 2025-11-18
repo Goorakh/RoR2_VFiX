@@ -1,5 +1,5 @@
 ﻿using RoR2;
-using RoR2BepInExPack.GameAssetPaths;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
 
 namespace VFiX.GrandparentPreSpawnEffect
@@ -8,7 +8,7 @@ namespace VFiX.GrandparentPreSpawnEffect
     {
         public static void Init()
         {
-            AssetLoadUtils.TemporaryPreload<GameObject>(RoR2_Base_Grandparent.GrandparentPreSpawnEffect_prefab, grandparentPreSpawnEffect =>
+            AssetLoadUtils.LoadTempAssetAsync<GameObject>(RoR2_Base_Grandparent.GrandparentPreSpawnEffect_prefab).CallOnSuccess(grandparentPreSpawnEffect =>
             {
                 if (grandparentPreSpawnEffect.TryGetComponent(out VFXAttributes vfxAttributes))
                 {

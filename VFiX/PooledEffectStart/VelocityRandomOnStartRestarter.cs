@@ -3,50 +3,20 @@ using UnityEngine;
 
 namespace VFiX.PooledEffectStart
 {
-    public class VelocityRandomOnStartRestarter : MonoBehaviour, IEffectRestarter
+    public sealed class VelocityRandomOnStartRestarter : MonoBehaviour, IEffectRestarter
     {
-        [SerializeField]
-        EffectRestarterController _restarter;
-
-        EffectRestarterController IEffectRestarter.RestarterController
-        {
-            get => _restarter;
-            set => _restarter = value;
-        }
-
-        public VelocityRandomOnStart VelocityRandomOnStart;
+        VelocityRandomOnStart _velocityRandomOnStart;
 
         void Awake()
         {
-            if (!_restarter)
-            {
-                _restarter = GetComponentInParent<EffectRestarterController>();
-            }
-
-            if (_restarter)
-            {
-                _restarter.OnReset += reset;
-            }
-
-            if (!VelocityRandomOnStart)
-            {
-                VelocityRandomOnStart = GetComponent<VelocityRandomOnStart>();
-            }
+            _velocityRandomOnStart = GetComponent<VelocityRandomOnStart>();
         }
 
-        void OnDestroy()
+        void IEffectRestarter.Restart()
         {
-            if (_restarter)
+            if (_velocityRandomOnStart)
             {
-                _restarter.OnReset -= reset;
-            }
-        }
-
-        void reset()
-        {
-            if (VelocityRandomOnStart)
-            {
-                VelocityRandomOnStart.Start();
+                _velocityRandomOnStart.Start();
             }
         }
     }

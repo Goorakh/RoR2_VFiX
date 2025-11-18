@@ -1,4 +1,6 @@
-﻿using RoR2;
+﻿using HG;
+using RoR2;
+using RoR2.DispatachableEffects;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -23,57 +25,40 @@ namespace VFiX.PooledEffectStart
                     continue;
                 }
 
-                //logUnhandledStartComponents(effectDef);
+                logUnhandledStartComponents(effectDef);
 
                 GameObject prefab = effectDef.prefab;
 
-                EffectRestarterController restarterController = null;
-
-                EffectRestarterController getOrAddRestarterController()
+                bool tryAddRestarters<TComponent, TRestarter>() where TComponent : Component where TRestarter : MonoBehaviour, IEffectRestarter
                 {
-                    if (!restarterController)
-                    {
-                        restarterController = prefab.AddComponent<EffectRestarterController>();
-                    }
-
-                    return restarterController;
-                }
-
-                void tryAddRestarters<TComponent, TRestarter>(string componentFieldName = null) where TComponent : Component where TRestarter : MonoBehaviour, IEffectRestarter
-                {
-                    FieldInfo componentField = null;
-                    if (!string.IsNullOrEmpty(componentFieldName))
-                    {
-                        componentField = typeof(TRestarter).GetField(componentFieldName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly);
-                    }
-
+                    bool addedAnyRestarter = false;
                     foreach (TComponent component in prefab.GetComponentsInChildren<TComponent>(true))
                     {
                         TRestarter restarter = component.gameObject.AddComponent<TRestarter>();
-                        restarter.RestarterController = getOrAddRestarterController();
-
-                        if (componentField != null)
-                        {
-                            componentField.SetValue(restarter, component);
-                        }
+                        addedAnyRestarter = true;
                     }
+
+                    return addedAnyRestarter;
                 }
 
-                tryAddRestarters<LightScaleFromParent, LightScaleFromParentRestarter>(nameof(LightScaleFromParentRestarter.LightScaleFromParent));
-                tryAddRestarters<RTPCController, RTPCControllerRestarter>(nameof(RTPCControllerRestarter.RTPCController));
-                tryAddRestarters<AlignToNormal, AlignToNormalRestarter>(nameof(AlignToNormalRestarter.AlignToNormal));
-                tryAddRestarters<ImpactEffect, ImpactEffectRestarter>(nameof(ImpactEffectRestarter.ImpactEffect));
-                tryAddRestarters<ParticleSystemColorFromEffectData, ParticleSystemColorFromEffectDataRestarter>(nameof(ParticleSystemColorFromEffectDataRestarter.ParticleSystemColorFromEffectData));
-                tryAddRestarters<CoinBehavior, CoinBehaviorRestarter>(nameof(CoinBehaviorRestarter.CoinBehavior));
-                tryAddRestarters<VelocityRandomOnStart, VelocityRandomOnStartRestarter>(nameof(VelocityRandomOnStartRestarter.VelocityRandomOnStart));
-                tryAddRestarters<ParticleSystemRandomColor, ParticleSystemRandomColorRestarter>(nameof(ParticleSystemRandomColorRestarter.ParticleSystemRandomColor));
-                tryAddRestarters<ApplyTorqueOnStart, ApplyTorqueOnStartRestarter>(nameof(ApplyTorqueOnStartRestarter.ApplyTorqueOnStart));
-                tryAddRestarters<ApplyForceOnStart, ApplyForceOnStartRestarter>(nameof(ApplyForceOnStartRestarter.ApplyForceOnStart));
-                tryAddRestarters<ExplodeRigidbodiesOnStart, ExplodeRigidbodiesOnStartRestarter>(nameof(ExplodeRigidbodiesOnStartRestarter.ExplodeRigidbodiesOnStart));
-                tryAddRestarters<SetRandomRotation, SetRandomRotationRestarter>(nameof(SetRandomRotationRestarter.SetRandomRotation));
+                bool addedAnyRestarter = false;
+                addedAnyRestarter |= tryAddRestarters<LightScaleFromParent, LightScaleFromParentRestarter>();
+                addedAnyRestarter |= tryAddRestarters<ImpactEffect, ImpactEffectRestarter>();
+                addedAnyRestarter |= tryAddRestarters<ParticleSystemColorFromEffectData, ParticleSystemColorFromEffectDataRestarter>();
+                addedAnyRestarter |= tryAddRestarters<CoinBehavior, CoinBehaviorRestarter>();
+                addedAnyRestarter |= tryAddRestarters<VelocityRandomOnStart, VelocityRandomOnStartRestarter>();
+                addedAnyRestarter |= tryAddRestarters<ParticleSystemRandomColor, ParticleSystemRandomColorRestarter>();
+                addedAnyRestarter |= tryAddRestarters<ApplyTorqueOnStart, ApplyTorqueOnStartRestarter>();
+                addedAnyRestarter |= tryAddRestarters<ApplyForceOnStart, ApplyForceOnStartRestarter>();
+                addedAnyRestarter |= tryAddRestarters<ExplodeRigidbodiesOnStart, ExplodeRigidbodiesOnStartRestarter>();
+                addedAnyRestarter |= tryAddRestarters<SetRandomRotation, SetRandomRotationRestarter>();
+                addedAnyRestarter |= tryAddRestarters<AddOverlayToReferencedObject, AddOverlayToReferencedObjectRestarter>();
+                addedAnyRestarter |= tryAddRestarters<TemporaryOverlay, TemporaryOverlayRestarter>();
+                addedAnyRestarter |= tryAddRestarters<EffectPassArgsToLocalToken, EffectPassArgsToLocalTokenRestarter>();
 
-                if (restarterController)
+                if (addedAnyRestarter)
                 {
+                    prefab.EnsureComponent<EffectRestarterController>();
                     Log.Debug($"Added effect restarter controller(s) to {effectDef.prefabName}");
                 }
             }
@@ -87,7 +72,7 @@ namespace VFiX.PooledEffectStart
             {
                 Type type = component.GetType();
 
-                if (type == typeof(EffectComponent) || type == typeof(DestroyOnTimer) || type == typeof(DestroyOnParticleEnd) || type == typeof(AnimateShaderAlpha) || type == typeof(LightScaleFromParent) || type == typeof(RTPCController) || type == typeof(TeamFilter) || type == typeof(ScaleParticleSystemDuration) || type == typeof(RotateObject) || type == typeof(AlignToNormal) || type == typeof(OmniEffect) || type == typeof(ImpactEffect) || type == typeof(ParticleSystemColorFromEffectData) || type == typeof(LaserPointer) || type == typeof(CoinBehavior) || type == typeof(VelocityRandomOnStart) || type == typeof(ParticleSystemRandomColor) || type == typeof(RigidbodyStickOnImpact) || type == typeof(ApplyTorqueOnStart) || type == typeof(ApplyForceOnStart) || type == typeof(ExplodeRigidbodiesOnStart) || type == typeof(MaintainRotation) || type == typeof(RotateItem) || type == typeof(SetRandomRotation) || type == typeof(Tracer) || type == typeof(BeamPointsFromTransforms))
+                if (type == typeof(EffectComponent) || type == typeof(DestroyOnTimer) || type == typeof(DestroyOnParticleEnd) || type == typeof(AnimateShaderAlpha) || type == typeof(LightScaleFromParent) || type == typeof(RTPCController) || type == typeof(TeamFilter) || type == typeof(ScaleParticleSystemDuration) || type == typeof(RotateObject) || type == typeof(AlignToNormal) || type == typeof(OmniEffect) || type == typeof(ImpactEffect) || type == typeof(ParticleSystemColorFromEffectData) || type == typeof(LaserPointer) || type == typeof(CoinBehavior) || type == typeof(VelocityRandomOnStart) || type == typeof(ParticleSystemRandomColor) || type == typeof(RigidbodyStickOnImpact) || type == typeof(ApplyTorqueOnStart) || type == typeof(ApplyForceOnStart) || type == typeof(ExplodeRigidbodiesOnStart) || type == typeof(MaintainRotation) || type == typeof(RotateItem) || type == typeof(SetRandomRotation) || type == typeof(Tracer) || type == typeof(BeamPointsFromTransforms) || type == typeof(LineBetweenTransforms) || type == typeof(MultiPointBezierCurveLine) || type == typeof(AddOverlayToReferencedObject) || type == typeof(TemporaryOverlay) || type == typeof(RendererColorFromEffectData) || type == typeof(EffectRetimer) || type == typeof(EffectPassArgsToLocalToken) || type == typeof(RotateIfMoving) || type == typeof(PickRandomObjectOnAwake) || type == typeof(PlatformToggle))
                 {
                     continue;
                 }

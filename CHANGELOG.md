@@ -1,3 +1,10 @@
+**1.1.0 Changes:**
+
+* Updated for Alloyed Collective
+	* Fixed dithering not being applied to some character and item display models
+
+* Fixed missing falling sound for captain orbital strike
+
 **1.0.6 Changes:**
 
 * Fixed certain effects increasing or decreasing in size after being repeatedly spawned

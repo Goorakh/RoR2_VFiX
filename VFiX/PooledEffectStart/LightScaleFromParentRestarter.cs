@@ -3,38 +3,16 @@ using UnityEngine;
 
 namespace VFiX.PooledEffectStart
 {
-    public class LightScaleFromParentRestarter : MonoBehaviour, IEffectRestarter
+    public sealed class LightScaleFromParentRestarter : MonoBehaviour, IEffectRestarter
     {
-        [SerializeField]
-        EffectRestarterController _restarter;
-
-        EffectRestarterController IEffectRestarter.RestarterController
-        {
-            get => _restarter;
-            set => _restarter = value;
-        }
-
-        public LightScaleFromParent LightScaleFromParent;
+        LightScaleFromParent _lightScaleFromParent;
 
         Light _light;
         float _originalRange;
 
         void Awake()
         {
-            if (!_restarter)
-            {
-                _restarter = GetComponentInParent<EffectRestarterController>();
-            }
-
-            if (_restarter)
-            {
-                _restarter.OnReset += reset;
-            }
-
-            if (!LightScaleFromParent)
-            {
-                LightScaleFromParent = GetComponent<LightScaleFromParent>();
-            }
+            _lightScaleFromParent = GetComponent<LightScaleFromParent>();
 
             if (TryGetComponent(out _light))
             {
@@ -42,24 +20,16 @@ namespace VFiX.PooledEffectStart
             }
         }
 
-        void OnDestroy()
-        {
-            if (_restarter)
-            {
-                _restarter.OnReset -= reset;
-            }
-        }
-
-        void reset()
+        void IEffectRestarter.Restart()
         {
             if (_light)
             {
                 _light.range = _originalRange;
             }
 
-            if (LightScaleFromParent)
+            if (_lightScaleFromParent)
             {
-                LightScaleFromParent.Start();
+                _lightScaleFromParent.Start();
             }
         }
     }
