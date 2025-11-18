@@ -1,5 +1,5 @@
 ﻿using RoR2;
-using RoR2BepInExPack.GameAssetPaths;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
 
 namespace VFiX.MeteorStrikePredictionEffect
@@ -8,7 +8,7 @@ namespace VFiX.MeteorStrikePredictionEffect
     {
         public static void Init()
         {
-            AssetLoadUtils.TemporaryPreload<GameObject>(RoR2_Base_Meteor.MeteorStrikePredictionEffect_prefab, meteorStrikePredictionEffect =>
+            AssetLoadUtils.LoadTempAssetAsync<GameObject>(RoR2_Base_Meteor.MeteorStrikePredictionEffect_prefab).CallOnSuccess(meteorStrikePredictionEffect =>
             {
                 Transform groundSlamIndicator = meteorStrikePredictionEffect.transform.Find("GroundSlamIndicator");
                 if (!groundSlamIndicator)
