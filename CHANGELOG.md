@@ -1,3 +1,7 @@
+**?.?.? Changes:**
+
+* Fixed Mercenary becoming pink after using Blinding Assault.
+
 **1.1.0 Changes:**
 
 * Updated for Alloyed Collective

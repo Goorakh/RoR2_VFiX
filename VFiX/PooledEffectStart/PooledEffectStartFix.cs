@@ -52,8 +52,6 @@ namespace VFiX.PooledEffectStart
                 addedAnyRestarter |= tryAddRestarters<ApplyForceOnStart, ApplyForceOnStartRestarter>();
                 addedAnyRestarter |= tryAddRestarters<ExplodeRigidbodiesOnStart, ExplodeRigidbodiesOnStartRestarter>();
                 addedAnyRestarter |= tryAddRestarters<SetRandomRotation, SetRandomRotationRestarter>();
-                addedAnyRestarter |= tryAddRestarters<AddOverlayToReferencedObject, AddOverlayToReferencedObjectRestarter>();
-                addedAnyRestarter |= tryAddRestarters<TemporaryOverlay, TemporaryOverlayRestarter>();
                 addedAnyRestarter |= tryAddRestarters<EffectPassArgsToLocalToken, EffectPassArgsToLocalTokenRestarter>();
 
                 if (addedAnyRestarter)
