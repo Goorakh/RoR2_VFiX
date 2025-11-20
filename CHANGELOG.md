@@ -1,4 +1,4 @@
-**?.?.? Changes:**
+**1.1.1 Changes:**
 
 * Fixed Mercenary becoming pink after using Blinding Assault.
 
