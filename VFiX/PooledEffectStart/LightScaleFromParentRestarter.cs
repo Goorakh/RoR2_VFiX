@@ -14,9 +14,15 @@ namespace VFiX.PooledEffectStart
         {
             _lightScaleFromParent = GetComponent<LightScaleFromParent>();
 
-            if (TryGetComponent(out _light))
+            if (TryGetComponent(out Light light))
             {
-                _originalRange = _light.range;
+                _light = light;
+                _originalRange = light.range;
+                Log.Debug($"Recorded original light range of {_originalRange} for {Util.GetGameObjectHierarchyName(gameObject)}");
+            }
+            else
+            {
+                Log.Warning($"No light reference, light range will not be restored: {Util.GetGameObjectHierarchyName(gameObject)}");
             }
         }
 
@@ -25,12 +31,19 @@ namespace VFiX.PooledEffectStart
             if (_light)
             {
                 _light.range = _originalRange;
+                Log.Debug($"Restored light range of {_light.range} for {Util.GetGameObjectHierarchyName(gameObject)}");
+            }
+            else
+            {
+                Log.Warning($"No light reference, light range will not be restored: {Util.GetGameObjectHierarchyName(gameObject)}");
             }
 
             if (_lightScaleFromParent)
             {
                 _lightScaleFromParent.Start();
             }
+
+            Log.Debug($"Scaled light range of {_light.range} for: {Util.GetGameObjectHierarchyName(gameObject)}");
         }
     }
 }
