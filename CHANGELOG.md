@@ -1,4 +1,4 @@
-**?.?.? Changes:**
+**1.1.2 Changes:**
 
 * Fixed certain effects with lights (ex. Scorch Worm projectiles, Glacial Elite death bubble, etc) becoming increasingly bright after spawning repeatedly.
 
@@ -9,7 +9,7 @@
 **1.1.0 Changes:**
 
 * Updated for Alloyed Collective
-	* Fixed dithering not being applied to some character and item display models
+    * Fixed dithering not being applied to some character and item display models
 
 * Fixed missing falling sound for captain orbital strike
 
