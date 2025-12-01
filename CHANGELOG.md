@@ -1,3 +1,7 @@
+**?.?.? Changes:**
+
+* Fixed certain effects with lights (ex. Scorch Worm projectiles, Glacial Elite death bubble, etc) becoming increasingly bright after spawning repeatedly.
+
 **1.1.1 Changes:**
 
 * Fixed Mercenary becoming pink after using Blinding Assault.
